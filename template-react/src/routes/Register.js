@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,10 +11,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../components/Copoyright';
+import EmptyAppbar from '../components/appbar/EmptyAppbar';
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(15),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -33,9 +35,16 @@ const useStyles = makeStyles(theme => ({
 
 const Register = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const handleClickSignup = () => {
+    // Server에 Register 요청
 
+    // Route
+    history.push('/login');
+  }
   return (
     <Container component="main" maxWidth="xs">
+      <EmptyAppbar/>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -54,8 +63,7 @@ const Register = () => {
                 fullWidth
                 id="firstName"
                 label="First Name"
-                autoFocus
-              />
+                autoFocus/>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -65,8 +73,7 @@ const Register = () => {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
-              />
+                autoComplete="email"/>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -77,8 +84,7 @@ const Register = () => {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
-              />
+                autoComplete="current-password"/>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -89,17 +95,15 @@ const Register = () => {
                 label="Password confirm"
                 type="password"
                 id="password-confirm"
-                autoComplete="current-password"
-              />
+                autoComplete="current-password"/>
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-          >
+            onClick = {handleClickSignup}>
             Sign Up
           </Button>
           <Grid container justify="flex-end">

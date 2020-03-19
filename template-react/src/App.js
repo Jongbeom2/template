@@ -1,7 +1,7 @@
 import React from 'react';
+import { HashRouter, Route } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Main from './routes/Main'
-
+import RouteMatcher from './routes/RouteMatcher';
 const theme = createMuiTheme({
 	palette: {
 		primary: {
@@ -15,7 +15,9 @@ const theme = createMuiTheme({
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-       < Main/>
+			<HashRouter>
+				<Route path="/:route" component={RouteMatcher} />
+			</HashRouter>
     </ThemeProvider>
   );
 }

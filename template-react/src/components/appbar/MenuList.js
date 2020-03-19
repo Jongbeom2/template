@@ -6,9 +6,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import HomeIcon from '@material-ui/icons/Home';
 import AppsIcon from '@material-ui/icons/Apps';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ImageIcon from '@material-ui/icons/Image';
+import MovieIcon from '@material-ui/icons/Movie';
+import SettingsIcon from '@material-ui/icons/Settings';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-
 export const mainListItems = (
   <div>
     <ListItem button component = {Link} to ="/home">
@@ -23,11 +25,29 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Portfolio" />
     </ListItem>
-    <ListItem button button component = {Link} to ="/profile">
+    <ListItem button component = {Link} to ="/freeimage">
       <ListItemIcon>
-        <AccountCircleIcon />
+        <ImageIcon />
       </ListItemIcon>
-      <ListItemText primary="Profile" />
+      <ListItemText primary="Free Image" />
+    </ListItem>
+    <ListItem button component = {Link} to ="/video">
+      <ListItemIcon>
+        <MovieIcon />
+      </ListItemIcon>
+      <ListItemText primary="Video" />
+    </ListItem>
+    <ListItem button component = {Link} to ="/apilist">
+      <ListItemIcon>
+        <SettingsIcon />
+      </ListItemIcon>
+      <ListItemText primary="API List" />
+    </ListItem>
+    <ListItem button component = {Link} to ="/appkey">
+      <ListItemIcon>
+        <VpnKeyIcon />
+      </ListItemIcon>
+      <ListItemText primary="App Key" />
     </ListItem>
   </div>
 );
