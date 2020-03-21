@@ -13,7 +13,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Button from '@material-ui/core/Button';
 import { mainListItems, secondaryListItems } from './MenuList';
-import {Auth} from '../auth/Auth';
 import ProfileMenu from './ProfileMenu';
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -82,7 +81,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MainAppBar = () => {
+const MainAppBar = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(true);
@@ -92,11 +91,8 @@ const MainAppBar = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const logout = () =>{
-    // Set login in server
+  const handleClickProfileMenu = () =>{
 
-    // Route
-    history.push('/login');
   }
   const login = () => {
     history.push('/login');
@@ -116,8 +112,8 @@ const MainAppBar = () => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Template
           </Typography>
-          {Auth().isLogined
-            ? <ProfileMenu onClick={logout} />
+          {props.user.isLogined
+            ? <ProfileMenu onClick={handleClickProfileMenu} />
             : <Button color="inherit" onClick={login}>Login</Button>}
         </Toolbar>
       </AppBar>

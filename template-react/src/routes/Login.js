@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -36,12 +37,43 @@ const useStyles = makeStyles(theme => ({
 
 const Login = () => {
   const classes = useStyles();
+  const [email, setEamil] = useState('');
+  const [password, setPassword] = useState('');
   const history = useHistory();
+  useEffect(() => {
+    checkIsLogined();
+  }, []);
+  const checkIsLogined = () => {
+    axios.post('/auth')
+		.then(res => {
+			if (res.data){
+				if(res.data.isLogined === true){
+          history.push('/');
+        }
+			}
+		})
+  };
+  const handleChangeEmail = (e) => {
+    setEamil(e.target.value);
+  }
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  }
   const hanldeClickSingin = () => {
     // Server에 Login 요청
-
-    // Route
-    history.push('/home');
+    axios.post('/auth/login',{
+			email,
+			password
+		})
+		.then(res => {
+			console.log(res.data.result);
+			if (res.data.result !== false){
+        console.log(res.data.message);
+        history.push('/');
+			}else{
+				console.log(res.data.message);
+			}
+		})
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -64,6 +96,7 @@ const Login = () => {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange = {handleChangeEmail}
           />
           <TextField
             variant="outlined"
@@ -75,6 +108,7 @@ const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange = {handleChangePassword}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

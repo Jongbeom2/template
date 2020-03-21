@@ -1,7 +1,9 @@
 import React from 'react';
-import { HashRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route , Switch} from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import RouteMatcher from './routes/RouteMatcher';
+import Login from './routes/Login';
+import Register from './routes/Register'
+import Main from './routes/Main'
 const theme = createMuiTheme({
 	palette: {
 		primary: {
@@ -15,9 +17,13 @@ const theme = createMuiTheme({
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-			<HashRouter>
-				<Route path="/:route" component={RouteMatcher} />
-			</HashRouter>
+			<BrowserRouter>
+				<Switch>
+					<Route exact path="/login" component={Login} />
+					<Route exact path="/register" component={Register} />
+					<Route path="/" component={Main} />
+				</Switch>
+			</BrowserRouter>
     </ThemeProvider>
   );
 }

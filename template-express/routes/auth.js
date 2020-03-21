@@ -4,8 +4,18 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 
-router.get('/', (req, res, next)=>{
-
+router.post('/', (req, res, next)=>{
+  if (req.user){
+    const user = req.user;
+    user.isLogined = true;
+    console.log(user);
+    res.send(user);
+  }else{
+    const user = {};
+    user.isLogined = false;
+    console.log(user);
+    res.send(user);
+  }
 });
 
 router.post('/login',(req,res,next)=>{

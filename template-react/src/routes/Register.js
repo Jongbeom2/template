@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -36,6 +37,19 @@ const useStyles = makeStyles(theme => ({
 const Register = () => {
   const classes = useStyles();
   const history = useHistory();
+  useEffect(() => {
+    checkIsLogined();
+  }, []);
+  const checkIsLogined = () => {
+    axios.post('/auth')
+		.then(res => {
+			if (res.data){
+				if(res.data.isLogined === true){
+          history.push('/main');
+        }
+			}
+		})
+  };
   const handleClickSignup = () => {
     // Server에 Register 요청
 
