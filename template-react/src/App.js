@@ -12,6 +12,7 @@ const theme = createMuiTheme({
 		secondary: {
 			main: '#2980b9'
 		},
+
 	},
 })
 const App = () => {

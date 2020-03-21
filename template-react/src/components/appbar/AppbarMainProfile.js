@@ -6,11 +6,11 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
   },
 }));
-const ProfileMenu = ({onClick}) => {
+const AppbarMainProfile = ({onClick}) => {
   const classes = useStyles();
   return(
     <AccountCircleIcon className= {classes.root} onClick={onClick}/>
   )
 }
 
-export default ProfileMenu;
+export default AppbarMainProfile;

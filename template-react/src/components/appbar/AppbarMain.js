@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,8 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Button from '@material-ui/core/Button';
-import { mainListItems, secondaryListItems } from './MenuList';
-import ProfileMenu from './ProfileMenu';
+import { mainListItems, secondaryListItems } from './MainMenuList';
+import AppbarMainProfile from './AppbarMainProfile';
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
@@ -91,7 +91,7 @@ const MainAppBar = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const handleClickProfileMenu = () =>{
+  const handleClickProfile = () => {
 
   }
   const login = () => {
@@ -112,8 +112,8 @@ const MainAppBar = (props) => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Template
           </Typography>
-          {props.user.isLogined
-            ? <ProfileMenu onClick={handleClickProfileMenu} />
+          {props.isLogined
+            ? <AppbarMainProfile onClick={handleClickProfile} />
             : <Button color="inherit" onClick={login}>Login</Button>}
         </Toolbar>
       </AppBar>

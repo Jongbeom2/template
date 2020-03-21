@@ -10,9 +10,8 @@ import APIList from './APIList';
 import Appkey from './AppKey';
 import Video from './Video';
 import FreeImage from './FreeImage';
-import PrivateRoute from '../components/PrivateRoute';
-import MainAppbar from '../components/appbar/MainAppbar';
-
+import AuthRoute from '../components/auth/AuthRoute';
+import AppbarMain from '../components/appbar/AppbarMain';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -30,21 +29,24 @@ const useStyles = makeStyles(theme => ({
 }));
 const Main = () => {
   const classes = useStyles();
-  const [user, setUser] = useState({isLogined:false});
+  const [isLogined, setIsLogined] = useState(false);
   useEffect(() => {
     getUser();
   }, []);
   const getUser = () => {
-    axios.post('/auth')
+    axios.post('/auth/check')
 		.then(res => {
-			if (res.data){
-				setUser(res.data);
-			}
+			if (res.data.result){
+        setIsLogined(true);
+        console.log('[Post] /auth/login',res.data.message);
+			}else{
+        console.log('[Post] /auth/login',res.data.message);
+      }
 		})
   };
   return (
     <div className={classes.root}>
-      <MainAppbar user={user} />
+      <AppbarMain isLogined={isLogined} />
       <div className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
@@ -55,9 +57,9 @@ const Main = () => {
             <Route exact path="/freeimage" component={FreeImage} />
             <Route exact path="/video" component={Video} />
             <Route exact path="/apilist" component={APIList} />
-            <PrivateRoute user={user} path="/appkey">
+            <AuthRoute isLogined={isLogined} path="/appkey">
               <Appkey />
-            </PrivateRoute>
+            </AuthRoute>
           </Grid>
         </Container>
       </div>

@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../components/Copoyright';
-import EmptyAppbar from '../components/appbar/EmptyAppbar';
+import AppbarEmpty from '../components/appbar/AppbarEmpty';
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(15),
@@ -31,8 +31,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 1),
   },
+  otherLogin: {
+    margin: theme.spacing(1, 0, 2),
+  }
 }));
 
 const Login = () => {
@@ -44,11 +47,14 @@ const Login = () => {
     checkIsLogined();
   }, []);
   const checkIsLogined = () => {
-    axios.post('/auth')
+    axios.post('/auth/check')
 		.then(res => {
 			if (res.data){
-				if(res.data.isLogined === true){
+				if(res.data.result === true){
+          console.log('[Post] /auth/login',res.data.message);
           history.push('/');
+        }else{
+          console.log('[Post] /auth/login',res.data.message);
         }
 			}
 		})
@@ -66,18 +72,17 @@ const Login = () => {
 			password
 		})
 		.then(res => {
-			console.log(res.data.result);
 			if (res.data.result !== false){
-        console.log(res.data.message);
+        console.log('[Post] /auth/login', res.data.message);
         history.push('/');
 			}else{
-				console.log(res.data.message);
+				console.log('[Post] /auth/login', res.data.message);
 			}
 		})
   }
   return (
     <Container component="main" maxWidth="xs">
-      <EmptyAppbar/>
+      <AppbarEmpty/>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -122,6 +127,14 @@ const Login = () => {
             onClick={hanldeClickSingin}
           >
             Sign In
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.otherLogin}
+          >
+            Kakao
           </Button>
           <Grid container>
             <Grid item xs>

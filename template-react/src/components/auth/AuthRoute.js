@@ -1,11 +1,11 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
-const PrivateRoute = ({ children, ...rest }) => {
+const AuthRoute = ({ children, ...rest }) => {
   return (
     <Route
       {...rest}
       render={() =>
-        rest.user.isLogined
+        rest.isLogined
         ? (children)
         : (<Redirect to={{pathname: "/login"}}/>)
       }
@@ -13,4 +13,4 @@ const PrivateRoute = ({ children, ...rest }) => {
   );
 };
 
-export default PrivateRoute;
+export default AuthRoute;

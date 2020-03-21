@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../components/Copoyright';
-import EmptyAppbar from '../components/appbar/EmptyAppbar';
+import AppbarEmpty from '../components/appbar/AppbarEmpty';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -41,11 +41,14 @@ const Register = () => {
     checkIsLogined();
   }, []);
   const checkIsLogined = () => {
-    axios.post('/auth')
+    axios.post('/auth/check')
 		.then(res => {
 			if (res.data){
-				if(res.data.isLogined === true){
-          history.push('/main');
+				if(res.data.result === true){
+          console.log('[Post] /auth/login',res.data.message);
+          history.push('/');
+        }else{
+          console.log('[Post] /auth/login',res.data.message);
         }
 			}
 		})
@@ -58,7 +61,7 @@ const Register = () => {
   }
   return (
     <Container component="main" maxWidth="xs">
-      <EmptyAppbar/>
+      <AppbarEmpty/>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

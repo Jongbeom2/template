@@ -12,9 +12,7 @@ module.exports = (passport) => {
         .then((user) => {
           if (user !== null){
             const result = bcrypt.compareSync(password, user.password);
-            console.log(result);
             if (result) {
-              console.log(result);
               done(null, user);
             } else {
               done(null, false);

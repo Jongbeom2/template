@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
     flexGrow: 1,
   },
 }));
-const EmptyAppbar = () => {
+const AppbarEmpty = () => {
   const classes = useStyles();
   const history = useHistory();
   const routeToMain = ()=> {
@@ -37,4 +37,4 @@ const EmptyAppbar = () => {
   );
 }
 
-export default EmptyAppbar;
+export default AppbarEmpty;

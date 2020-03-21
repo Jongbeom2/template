@@ -4,17 +4,11 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 
-router.post('/', (req, res, next)=>{
-  if (req.user){
-    const user = req.user;
-    user.isLogined = true;
-    console.log(user);
-    res.send(user);
+router.post('/check', (req, res, next)=>{
+  if(req.user){
+    return res.send({ result: true, message: '로그인 상태입니다.' });
   }else{
-    const user = {};
-    user.isLogined = false;
-    console.log(user);
-    res.send(user);
+    return res.send({ result: false, message: '로그인 상태가 아닙니다.' });
   }
 });
 
@@ -47,7 +41,6 @@ router.post('/register', (req, res, next) =>{
   user.password = hash;
   user.save()
     .then((result) => {
-      console.log(result);
       res.status(201).json(result);
     })
     .catch((err) => {
