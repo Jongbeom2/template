@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.dark,
   },
   form: {
     width: '100%',
@@ -35,6 +35,14 @@ const useStyles = makeStyles(theme => ({
   },
   otherLogin: {
     margin: theme.spacing(1, 0, 2),
+    backgroundColor: theme.palette.custom.kakao,
+    '&:hover': {
+      backgroundColor: theme.palette.custom.kakaoHover,
+    },
+  },
+  typographyButton: {
+    cursor: 'pointer',
+    color: theme.palette.primary.main
   }
 }));
 
@@ -65,7 +73,7 @@ const Login = () => {
   const handleChangePassword = (e) => {
     setPassword(e.target.value);
   }
-  const hanldeClickSingin = () => {
+  const hanldeClickSignIn = () => {
     // Server에 Login 요청
     axios.post('/auth/login',{
 			email,
@@ -79,6 +87,9 @@ const Login = () => {
 				console.log('[Post] /auth/login', res.data.message);
 			}
 		})
+  }
+  const handleClickSignUp = () =>{
+    history.push('/register');
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -124,28 +135,27 @@ const Login = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={hanldeClickSingin}
+            onClick={hanldeClickSignIn}
           >
             Sign In
           </Button>
           <Button
             fullWidth
             variant="contained"
-            color="primary"
             className={classes.otherLogin}
           >
             Kakao
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#/login" variant="body2">
+              <Typography className = {classes.typographyButton} variant="body2">
                 Forgot password?
-              </Link>
+              </Typography>
             </Grid>
             <Grid item>
-              <Link href="/#/register" variant="body2">
+              <Typography className = {classes.typographyButton} onClick = {handleClickSignUp} variant="body2">
                 {"Don't have an account? Sign Up"}
-              </Link>
+              </Typography>
             </Grid>
           </Grid>
         </form>

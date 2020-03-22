@@ -1,18 +1,24 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const userSchema = new Schema({
-  name:{
+  nickname:{
     type: String,
     required: true,
   },
   email:{
     type: String,
-    required: true,
     unique: true,
   },
   password:{
     type: String,
+  },
+  provider:{
+    type: String,
     required: true,
+    default: 'local'
+  },
+  snsId:{
+    type: String,
   },
   createdAt: {
     type: Date,

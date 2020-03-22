@@ -33,7 +33,7 @@ router.post('/login',(req,res,next)=>{
 
 router.post('/register', (req, res, next) =>{
   const user = new User({
-    name: req.body.name,
+    nickname: req.body.nickname,
     password: req.body.password,
     email: req.body.email,
   });
@@ -41,7 +41,7 @@ router.post('/register', (req, res, next) =>{
   user.password = hash;
   user.save()
     .then((result) => {
-      res.status(201).json(result);
+      res.status(201).json({result:true, message:'회원 가입에 성공했습니다.'});
     })
     .catch((err) => {
       console.error(err);

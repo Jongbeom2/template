@@ -7,12 +7,17 @@ import Main from './routes/Main'
 const theme = createMuiTheme({
 	palette: {
 		primary: {
-			main: '#3498db',
+			main: '#1976d2',
+			dark: '#115293',
+			light: '#4791db',
 		},
 		secondary: {
-			main: '#2980b9'
+			main: '#dc004e'
 		},
-
+		custom: {
+			kakao: '#ffe500',
+			kakaoHover: '#c7b300'
+		}
 	},
 })
 const App = () => {

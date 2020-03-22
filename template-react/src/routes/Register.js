@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.dark,
   },
   form: {
     width: '100%',
@@ -32,11 +32,19 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  typographyButton: {
+    cursor: 'pointer',
+    color: theme.palette.primary.main
+  }
 }));
 
 const Register = () => {
   const classes = useStyles();
   const history = useHistory();
+  const [nickname, setNickname] = useState('');
+  const [email, setEamil] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   useEffect(() => {
     checkIsLogined();
   }, []);
@@ -53,10 +61,35 @@ const Register = () => {
 			}
 		})
   };
-  const handleClickSignup = () => {
+  const handleChangeNickname = (e) => {
+    setNickname(e.target.value);
+  }
+  const handleChangeEmail = (e) => {
+    setEamil(e.target.value);
+  }
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  }
+  const handleChangePasswordConfirm = (e) => {
+    setPasswordConfirm(e.target.value);
+  }
+  const handleClickSignUp = () => {
     // Server에 Register 요청
-
-    // Route
+    axios.post('/auth/register',{
+      nickname,
+			email,
+			password
+		})
+		.then(res => {
+			if (res.data.result !== false){
+        console.log('[Post] /auth/register', res.data.message);
+        history.push('/login');
+			}else{
+				console.log('[Post] /auth/register', res.data.message);
+			}
+		})
+  }
+  const handleClickSignIn = () => {
     history.push('/login');
   }
   return (
@@ -73,13 +106,14 @@ const Register = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                autoComplete="nickname"
+                name="nickname"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="nickname"
+                label="Nickname"
+                onChange = {handleChangeNickname}
                 autoFocus/>
             </Grid>
             <Grid item xs={12}>
@@ -90,7 +124,8 @@ const Register = () => {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"/>
+                autoComplete="email"
+                onChange = {handleChangeEmail}/>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -101,7 +136,8 @@ const Register = () => {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"/>
+                autoComplete="current-password"
+                onChange = {handleChangePassword}/>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -109,10 +145,11 @@ const Register = () => {
                 required
                 fullWidth
                 name="password-confirm"
-                label="Password confirm"
+                label="Password Confirm"
                 type="password"
                 id="password-confirm"
-                autoComplete="current-password"/>
+                autoComplete="current-password"
+                onChange = {handleChangePasswordConfirm}/>
             </Grid>
           </Grid>
           <Button
@@ -120,14 +157,14 @@ const Register = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick = {handleClickSignup}>
+            onClick = {handleClickSignUp}>
             Sign Up
           </Button>
           <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#/login" variant="body2">
+            <Grid item> 
+              <Typography onClick = {handleClickSignIn} className={classes.typographyButton} variant="body2">
                 Already have an account? Sign in
-              </Link>
+              </Typography>
             </Grid>
           </Grid>
         </form>
