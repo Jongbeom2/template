@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }));
 const Main = () => {
   const classes = useStyles();
-  const [isLogined, setIsLogined] = useState(false);
+  const [isSignedin, setIsSignedin] = useState(false);
   useEffect(() => {
     getUser();
   }, []);
@@ -37,16 +37,16 @@ const Main = () => {
     axios.post('/auth/check')
 		.then(res => {
 			if (res.data.result){
-        setIsLogined(true);
-        console.log('[Post] /auth/login',res.data.message);
+        setIsSignedin(true);
+        console.log('[Post] /auth/check',res.data.message);
 			}else{
-        console.log('[Post] /auth/login',res.data.message);
+        console.log('[Post] /auth/check',res.data.message);
       }
 		})
   };
   return (
     <div className={classes.root}>
-      <AppbarMain isLogined={isLogined} />
+      <AppbarMain isSignedin={isSignedin} />
       <div className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
@@ -57,7 +57,7 @@ const Main = () => {
             <Route exact path="/freeimage" component={FreeImage} />
             <Route exact path="/video" component={Video} />
             <Route exact path="/apilist" component={APIList} />
-            <AuthRoute isLogined={isLogined} path="/appkey">
+            <AuthRoute isSignedin={isSignedin} path="/appkey">
               <Appkey />
             </AuthRoute>
           </Grid>

@@ -4,7 +4,6 @@ import {useHistory} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -38,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Register = () => {
+const Signup = () => {
   const classes = useStyles();
   const history = useHistory();
   const [nickname, setNickname] = useState('');
@@ -46,17 +45,17 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   useEffect(() => {
-    checkIsLogined();
+    checkIsSignedin();
   }, []);
-  const checkIsLogined = () => {
+  const checkIsSignedin = () => {
     axios.post('/auth/check')
 		.then(res => {
 			if (res.data){
 				if(res.data.result === true){
-          console.log('[Post] /auth/login',res.data.message);
+          console.log('[Post] /auth/check',res.data.message);
           history.push('/');
         }else{
-          console.log('[Post] /auth/login',res.data.message);
+          console.log('[Post] /auth/check',res.data.message);
         }
 			}
 		})
@@ -74,23 +73,26 @@ const Register = () => {
     setPasswordConfirm(e.target.value);
   }
   const handleClickSignUp = () => {
-    // Server에 Register 요청
-    axios.post('/auth/register',{
+    if (password !== passwordConfirm){
+      return;
+    }
+    // Server에 signup 요청
+    axios.post('/auth/signup',{
       nickname,
 			email,
 			password
 		})
 		.then(res => {
 			if (res.data.result !== false){
-        console.log('[Post] /auth/register', res.data.message);
-        history.push('/login');
+        console.log('[Post] /auth/signup', res.data.message);
+        history.push('/signin');
 			}else{
-				console.log('[Post] /auth/register', res.data.message);
+				console.log('[Post] /auth/signup', res.data.message);
 			}
 		})
   }
   const handleClickSignIn = () => {
-    history.push('/login');
+    history.push('/signin');
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -176,4 +178,4 @@ const Register = () => {
   );
 }
 
-export default Register;
+export default Signup;

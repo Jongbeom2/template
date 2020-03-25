@@ -5,9 +5,9 @@ const AuthRoute = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={() =>
-        rest.isLogined
+        rest.isSignedin
         ? (children)
-        : (<Redirect to={{pathname: "/login"}}/>)
+        : (<Redirect to={{pathname: "/signin"}}/>)
       }
     />
   );

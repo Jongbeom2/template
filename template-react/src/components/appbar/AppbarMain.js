@@ -91,11 +91,8 @@ const MainAppBar = (props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const handleClickProfile = () => {
-
-  }
-  const login = () => {
-    history.push('/login');
+  const signin = () => {
+    history.push('/signin');
   }
   return (
     <>
@@ -110,11 +107,11 @@ const MainAppBar = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Template
+            JB's Template
           </Typography>
-          {props.isLogined
-            ? <AppbarMainProfile onClick={handleClickProfile} />
-            : <Button color="inherit" onClick={login}>Login</Button>}
+          {props.isSignedin
+            ? <AppbarMainProfile />
+            : <Button color="inherit" onClick={signin}>Signin</Button>}
         </Toolbar>
       </AppBar>
       <Drawer

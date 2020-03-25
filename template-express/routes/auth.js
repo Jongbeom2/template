@@ -1,18 +1,19 @@
 const express = require('express');
 const User = require('../schemas/user');
 const passport = require('passport');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
+const { isSignedIn, isNotSignIn } = require('./middlewares');
 const router = express.Router();
 
-router.post('/check', (req, res, next)=>{
-  if(req.user){
+router.post('/check', (req, res, next) => {
+  if (req.user) {
     return res.send({ result: true, message: '로그인 상태입니다.' });
-  }else{
+  } else {
     return res.send({ result: false, message: '로그인 상태가 아닙니다.' });
   }
 });
 
-router.post('/login',(req,res,next)=>{
+router.post('/signin', isNotSignIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {
       console.error(authError);
@@ -31,7 +32,12 @@ router.post('/login',(req,res,next)=>{
   })(req, res, next);
 })
 
-router.post('/register', (req, res, next) =>{
+router.post('/signout', isSignedIn, (req, res, next) => {
+  req.session.destroy();
+  return res.send({ result: true, message: '로그아웃에 성공했습니다.' });
+});
+
+router.post('/signup', isNotSignIn,(req, res, next) => {
   const user = new User({
     nickname: req.body.nickname,
     password: req.body.password,
@@ -41,12 +47,20 @@ router.post('/register', (req, res, next) =>{
   user.password = hash;
   user.save()
     .then((result) => {
-      res.status(201).json({result:true, message:'회원 가입에 성공했습니다.'});
+      res.status(201).json({ result: true, message: '회원 가입에 성공했습니다.' });
     })
     .catch((err) => {
       console.error(err);
       next(err);
     });
+});
+
+router.get('/kakao', passport.authenticate('kakao'));
+
+router.get('/kakao/callback', passport.authenticate('kakao', {
+  failureRedirect: (process.env.NODE_ENV === "production" ? '/signin':'http://localhost:3000/sign'),
+}), (req, res) => {
+  res.redirect((process.env.NODE_ENV === "production" ? '/':'http://localhost:3000/home'));
 });
 
 module.exports = router;

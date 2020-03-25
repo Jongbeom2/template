@@ -1,10 +1,10 @@
 const local = require('./localStrategy');
-//const kakao = require('./kakaoStrategy');
+const kakao = require('./kakaoStrategy');
 
 const User = require('../schemas/user');
 module.exports = (passport) => {
   passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.id);
   });
 
   passport.deserializeUser((user, done) => {
@@ -12,5 +12,5 @@ module.exports = (passport) => {
   });
 
   local(passport);
-  //kakao(passport)
+  kakao(passport)
 };

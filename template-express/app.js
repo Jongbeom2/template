@@ -5,6 +5,7 @@ const cors = require('cors')
 const session = require('express-session');
 const dotenv = require('dotenv')
 const passport = require('passport');
+const path = require('path');
 // call func of modules
 const app = express();
 dotenv.config();
@@ -17,7 +18,7 @@ const passportConfig = require('./passport');
 connect();
 passportConfig(passport);
 // setting app
-app.set('port', process.env.PORT || 8001);
+app.set('port', process.env.PORT || 5000);
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,9 +34,15 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "./client/build")));
+}
 // route
-app.use('/', indexRouter);
 app.use('/auth',authRouter);
+app.use('/', indexRouter);
+app.get('*', function (req, res){
+  res.sendFile(path.join(__dirname, "./client/build", "index.html"));
+})
 // error
 app.use((req, res, next) => {
   const err = new Error('Not Found');

@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -33,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 1),
   },
-  otherLogin: {
+  otherSignin: {
     margin: theme.spacing(1, 0, 2),
     backgroundColor: theme.palette.custom.kakao,
     '&:hover': {
@@ -46,23 +45,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = () => {
+const Signin = () => {
   const classes = useStyles();
   const [email, setEamil] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
   useEffect(() => {
-    checkIsLogined();
+    checkIsSignedin();
   }, []);
-  const checkIsLogined = () => {
+  const checkIsSignedin = () => {
     axios.post('/auth/check')
 		.then(res => {
 			if (res.data){
 				if(res.data.result === true){
-          console.log('[Post] /auth/login',res.data.message);
-          history.push('/');
+          console.log('[Post] /auth/check',res.data.message);
+          history.push('/'); 
         }else{
-          console.log('[Post] /auth/login',res.data.message);
+          console.log('[Post] /auth/check',res.data.message);
         }
 			}
 		})
@@ -74,22 +73,26 @@ const Login = () => {
     setPassword(e.target.value);
   }
   const hanldeClickSignIn = () => {
-    // Server에 Login 요청
-    axios.post('/auth/login',{
+    // Server에 Signin 요청
+    axios.post('/auth/signin',{
 			email,
 			password
 		})
 		.then(res => {
 			if (res.data.result !== false){
-        console.log('[Post] /auth/login', res.data.message);
-        history.push('/');
+        console.log('[Post] /auth/signin', res.data.message);
+        history.push('/home');
 			}else{
-				console.log('[Post] /auth/login', res.data.message);
+				console.log('[Post] /auth/signin', res.data.message);
 			}
 		})
   }
+  const handleClickKakao = () => {
+    window.location.href = 'http://localhost:5000/auth/kakao';
+    //window.location.href = 'https://jb-template.herokuapp.com/auth/kakao';
+  }
   const handleClickSignUp = () =>{
-    history.push('/register');
+    history.push('/signup');
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -142,7 +145,8 @@ const Login = () => {
           <Button
             fullWidth
             variant="contained"
-            className={classes.otherLogin}
+            className={classes.otherSignin}
+            onClick={handleClickKakao}
           >
             Kakao
           </Button>
@@ -167,4 +171,4 @@ const Login = () => {
   );
 }
 
-export default Login;
+export default Signin;
