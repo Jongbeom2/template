@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../components/Copoyright';
 import AppbarEmpty from '../components/appbar/AppbarEmpty';
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles(theme => ({
   root:{
     background: theme.palette.background.paper,
@@ -47,13 +48,19 @@ const useStyles = makeStyles(theme => ({
   typographyButton: {
     cursor: 'pointer',
     color: theme.palette.primary.main
-  }
-}));
+  },
+  progress:{
+    marginBottom: theme.spacing(10),
+    marginTop: theme.spacing(30),
+  },
 
+}));
 const Signin = () => {
   const classes = useStyles();
   const [email, setEamil] = useState('');
   const [password, setPassword] = useState('');
+  const [isInProgress, setIsInProgress] = useState(false);
+  const [message, setMessage] = useState('');
   const history = useHistory();
   useEffect(() => {
     checkIsSignedin();
@@ -78,6 +85,11 @@ const Signin = () => {
     setPassword(e.target.value);
   }
   const hanldeClickSignIn = () => {
+    if (email ==='' || password === ''){
+      setMessage('Email address and password are required.');
+      return;
+    }
+    setIsInProgress(true);
     // Server에 Signin 요청
     axios.post('/auth/signin',{
 			email,
@@ -88,6 +100,8 @@ const Signin = () => {
         console.log('[Post] /auth/signin', res.data.message);
         history.push('/home');
 			}else{
+        setIsInProgress(false);
+        setMessage('Try again or click Forgot password to reset it.');
 				console.log('[Post] /auth/signin', res.data.message);
 			}
 		})
@@ -101,13 +115,22 @@ const Signin = () => {
   }
   return (
     <div className={classes.root}>  
-    <Container maxWidth="xs">
-      <AppbarEmpty/>
+    <AppbarEmpty/>
+    {isInProgress
+    ?<Container maxWidth="xs">
+      <div className={classes.paper}>
+        <CircularProgress className={classes.progress}/>
+        <Typography component="h1" variant="h5" color='textPrimary'>
+          Wait...
+        </Typography>
+      </div>
+    </Container>
+    :<Container maxWidth="xs">
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" color='textPrimary'>
           Sign in
         </Typography>
         <form className={classes.form} noValidate>
@@ -139,6 +162,9 @@ const Signin = () => {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+          <Typography component="h1" variant="subtitle2" color='error'>
+            {message}
+          </Typography>
           <Button
             fullWidth
             variant="contained"
@@ -174,6 +200,7 @@ const Signin = () => {
         <Copyright />
       </Box>
     </Container>
+    }
     </div>
   );
 }

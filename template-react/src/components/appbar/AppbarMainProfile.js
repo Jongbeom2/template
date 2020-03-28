@@ -38,6 +38,7 @@ const AppbarMainProfile = () => {
           history.push('/signin');
         }else{
           console.log('[Post] /auth/signout',res.data.message);
+          history.push('/signin');
         }
 			}
 		})

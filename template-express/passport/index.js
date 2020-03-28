@@ -7,8 +7,14 @@ module.exports = (passport) => {
     done(null, user.id);
   });
 
-  passport.deserializeUser((user, done) => {
-    done(null, user);
+  passport.deserializeUser((id, done) => {
+    User.findOne({_id: id},{_id: 0, password:0,createdAt:0,__v:0,snsId:0})
+    .then(user => {
+      done(null, user)
+    })
+    .catch(err => {
+      done(error);
+    })
   });
 
   local(passport);

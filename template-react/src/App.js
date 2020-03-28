@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createContext } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Signin from './routes/Signin';
@@ -26,10 +26,10 @@ const themeDark = createMuiTheme({
 		},
 		type: 'dark',
 		primary: {
-			main: '#303030',
+			main: '#202020',
 		},
 		secondary: {
-			main: '#303030',
+			main: '#202020',
 		},
 		custom: {
 			kakao: '#ffe500',
@@ -37,17 +37,29 @@ const themeDark = createMuiTheme({
 		}
 	},
 })
+export const PaletteTypeContext = createContext({
+	paletteType: {},
+	setPaletteType: {},
+});
+
 const App = () => {
+	const [paletteType, setPaletteType] = useState('light');
+	const value = {
+		paletteType,
+		setPaletteType
+	}
 	return (
-		<ThemeProvider theme={themeDark}>
-			<BrowserRouter>
-				<Switch>
-					<Route exact path="/signin" component={Signin} />
-					<Route exact path="/signup" component={Signup} />
-					<Route path="/" component={Main} />
-				</Switch>
-			</BrowserRouter>
-		</ThemeProvider>
+		<PaletteTypeContext.Provider value={value}>
+			<ThemeProvider theme={paletteType === 'light' ? themeLight : themeDark}>
+				<BrowserRouter>
+					<Switch>
+						<Route exact path="/signin" component={Signin} />
+						<Route exact path="/signup" component={Signup} />
+						<Route path="/" component={Main} />
+					</Switch>
+				</BrowserRouter>
+			</ThemeProvider>
+		</PaletteTypeContext.Provider>
 	);
 }
 

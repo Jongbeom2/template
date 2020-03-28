@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,6 +15,8 @@ import Button from '@material-ui/core/Button';
 import { mainListItems, secondaryListItems } from './MainMenuList';
 import AppbarMainProfile from './AppbarMainProfile';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
+import { PaletteTypeContext } from '../../App';
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
   iconButton: {
     marginRight: 36,
-    cursor:'pointer'
+    cursor: 'pointer'
   },
   menuButtonHidden: {
     display: 'none',
@@ -87,6 +89,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MainAppBar = (props) => {
+  const { paletteType, setPaletteType } = useContext(PaletteTypeContext);
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(true);
@@ -100,7 +103,11 @@ const MainAppBar = (props) => {
     history.push('/signin');
   }
   const handleClickTheme = () => {
-
+    if (paletteType === 'dark'){
+      setPaletteType('light');
+    }else if (paletteType === 'light'){
+      setPaletteType('dark');
+    }
   }
   return (
     <>
@@ -117,7 +124,9 @@ const MainAppBar = (props) => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             JB's Template
           </Typography>
-          <Brightness4Icon className={classes.iconButton} onClick={handleClickTheme}/>
+          {paletteType === 'dark'
+            ? <Brightness7Icon className={classes.iconButton} onClick={handleClickTheme} />
+            : <Brightness4Icon className={classes.iconButton} onClick={handleClickTheme} />}
           {props.isSignedin
             ? <AppbarMainProfile />
             : <Button color="inherit" onClick={signin}>Signin</Button>}

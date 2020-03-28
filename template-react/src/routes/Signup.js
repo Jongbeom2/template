@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../components/Copoyright';
 import AppbarEmpty from '../components/appbar/AppbarEmpty';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles(theme => ({
   root:{
     background: theme.palette.background.paper,
@@ -39,9 +39,11 @@ const useStyles = makeStyles(theme => ({
   typographyButton: {
     cursor: 'pointer',
     color: theme.palette.primary.main
+  },
+  message:{
+    marginTop: theme.spacing(1),
   }
 }));
-
 const Signup = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -49,6 +51,8 @@ const Signup = () => {
   const [email, setEamil] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [isInProgress, setIsInProgress] = useState(false);
+  const [message, setMessage] = useState('');
   useEffect(() => {
     checkIsSignedin();
   }, []);
@@ -78,9 +82,15 @@ const Signup = () => {
     setPasswordConfirm(e.target.value);
   }
   const handleClickSignUp = () => {
-    if (password !== passwordConfirm){
+    if (nickname === '' || email === '' || password === '' || passwordConfirm === ''){
+      setMessage('All fields are required.')
       return;
     }
+    if (password !== passwordConfirm){
+      setMessage('Those passwords didn\'t match. Try again.')
+      return;
+    }
+    setIsInProgress(true);
     // Server에 signup 요청
     axios.post('/auth/signup',{
       nickname,
@@ -92,6 +102,13 @@ const Signup = () => {
         console.log('[Post] /auth/signup', res.data.message);
         history.push('/signin');
 			}else{
+        if (res.data.type === 'useError'){
+          setIsInProgress(false);
+          setMessage('This email address is already exist.');
+        }else{
+          setIsInProgress(false);
+          setMessage('There was an error. Please try again.');
+        }
 				console.log('[Post] /auth/signup', res.data.message);
 			}
 		})
@@ -101,13 +118,22 @@ const Signup = () => {
   }
   return (
     <div className={classes.root}>
-    <Container component="main" maxWidth="xs" >
-      <AppbarEmpty/>
+    <AppbarEmpty/>
+    {isInProgress
+    ?<Container maxWidth="xs">
+      <div className={classes.paper}>
+        <CircularProgress className={classes.progress}/>
+        <Typography component="h1" variant="h5" color='textPrimary'>
+          Wait...
+        </Typography>
+      </div>
+    </Container>
+    :<Container component="main" maxWidth="xs" >
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" color='textPrimary'>
           Sign up
         </Typography>
         <form className={classes.form} noValidate>
@@ -160,6 +186,9 @@ const Signup = () => {
                 onChange = {handleChangePasswordConfirm}/>
             </Grid>
           </Grid>
+          <Typography component="h1" variant="subtitle2" color='error' className={classes.message}>
+            {message}
+          </Typography>
           <Button
             fullWidth
             variant="contained"
@@ -181,6 +210,7 @@ const Signup = () => {
         <Copyright />
       </Box>
     </Container>
+    }
     </div>
   );
 }
