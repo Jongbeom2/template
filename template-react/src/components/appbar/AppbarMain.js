@@ -14,6 +14,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Button from '@material-ui/core/Button';
 import { mainListItems, secondaryListItems } from './MainMenuList';
 import AppbarMainProfile from './AppbarMainProfile';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,6 +47,10 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: 36,
+  },
+  iconButton: {
+    marginRight: 36,
+    cursor:'pointer'
   },
   menuButtonHidden: {
     display: 'none',
@@ -94,6 +99,9 @@ const MainAppBar = (props) => {
   const signin = () => {
     history.push('/signin');
   }
+  const handleClickTheme = () => {
+
+  }
   return (
     <>
       <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -109,6 +117,7 @@ const MainAppBar = (props) => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             JB's Template
           </Typography>
+          <Brightness4Icon className={classes.iconButton} onClick={handleClickTheme}/>
           {props.isSignedin
             ? <AppbarMainProfile />
             : <Button color="inherit" onClick={signin}>Signin</Button>}

@@ -15,6 +15,7 @@ import AppbarMain from '../components/appbar/AppbarMain';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    background: theme.palette.background.paper
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -45,7 +46,7 @@ const Main = () => {
 		})
   };
   return (
-    <div className={classes.root}>
+    <div  className={classes.root} >
       <AppbarMain isSignedin={isSignedin} />
       <div className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -63,7 +64,7 @@ const Main = () => {
           </Grid>
         </Container>
       </div>
-    </div>
+    </div >
   );
 }
 

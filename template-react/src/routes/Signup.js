@@ -14,14 +14,19 @@ import Copyright from '../components/Copoyright';
 import AppbarEmpty from '../components/appbar/AppbarEmpty';
 
 const useStyles = makeStyles(theme => ({
+  root:{
+    background: theme.palette.background.paper,
+    width:'100%',
+    height: '100%'
+  },
   paper: {
-    marginTop: theme.spacing(15),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
+    marginTop: theme.spacing(15),
     backgroundColor: theme.palette.primary.dark,
   },
   form: {
@@ -95,7 +100,8 @@ const Signup = () => {
     history.push('/signin');
   }
   return (
-    <Container component="main" maxWidth="xs">
+    <div className={classes.root}>
+    <Container component="main" maxWidth="xs" >
       <AppbarEmpty/>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -175,6 +181,7 @@ const Signup = () => {
         <Copyright />
       </Box>
     </Container>
+    </div>
   );
 }
 
