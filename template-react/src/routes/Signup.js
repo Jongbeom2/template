@@ -42,7 +42,11 @@ const useStyles = makeStyles(theme => ({
   },
   message:{
     marginTop: theme.spacing(1),
-  }
+  },
+  progress:{
+    marginBottom: theme.spacing(10),
+    marginTop: theme.spacing(30),
+  },
 }));
 const Signup = () => {
   const classes = useStyles();
@@ -54,8 +58,12 @@ const Signup = () => {
   const [isInProgress, setIsInProgress] = useState(false);
   const [message, setMessage] = useState('');
   useEffect(() => {
-    checkIsSignedin();
-  }, []);
+    if(!isInProgress){
+      checkIsSignedin();
+
+      console.log(nickname, email, password, passwordConfirm);
+    }
+  }, [isInProgress]);
   const checkIsSignedin = () => {
     axios.post('/auth/check')
 		.then(res => {
@@ -102,14 +110,9 @@ const Signup = () => {
         console.log('[Post] /auth/signup', res.data.message);
         history.push('/signin');
 			}else{
-        if (res.data.type === 'useError'){
-          setIsInProgress(false);
-          setMessage('This email address is already exist.');
-        }else{
-          setIsInProgress(false);
-          setMessage('There was an error. Please try again.');
-        }
-				console.log('[Post] /auth/signup', res.data.message);
+        setIsInProgress(false);
+        setMessage('This email address is already exist.');
+        console.log('[Post] /auth/signup', res.data.message);
 			}
 		})
   }
@@ -147,6 +150,7 @@ const Signup = () => {
                 fullWidth
                 id="nickname"
                 label="Nickname"
+                defaultValue={nickname}
                 onChange = {handleChangeNickname}
                 autoFocus/>
             </Grid>
@@ -159,6 +163,7 @@ const Signup = () => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                defaultValue={email}
                 onChange = {handleChangeEmail}/>
             </Grid>
             <Grid item xs={12}>
@@ -171,6 +176,7 @@ const Signup = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                defaultValue={password}
                 onChange = {handleChangePassword}/>
             </Grid>
             <Grid item xs={12}>
@@ -183,6 +189,7 @@ const Signup = () => {
                 type="password"
                 id="password-confirm"
                 autoComplete="current-password"
+                defaultValue={passwordConfirm}
                 onChange = {handleChangePasswordConfirm}/>
             </Grid>
           </Grid>

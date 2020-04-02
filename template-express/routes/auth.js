@@ -33,36 +33,32 @@ router.post('/signin', isNotSignIn, (req, res, next) => {
 })
 
 router.post('/signout', isSignedIn, (req, res, next) => {
-  req.session.destroy();
-  return res.send({ result: true, message: '로그아웃에 성공했습니다.' });
+  try{
+    req.session.destroy();
+    return res.send({ result: true, message: '로그아웃에 성공했습니다.' });
+  }catch(err){
+    next(err);
+  }
 });
 
-router.post('/signup', isNotSignIn, (req, res, next) => {
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (user) {
-        res.send({ result: false, type: 'useError', message: '이메일이 중복됩니다.' });
-      } else {
-        const user = new User({
-          nickname: req.body.nickname,
-          password: req.body.password,
-          email: req.body.email,
-        });
-        const hash = bcrypt.hashSync(user.password, 12);
-        user.password = hash;
-        user.save()
-          .then((result) => {
-            res.status(201).json({ result: true, message: '회원 가입에 성공했습니다.' });
-          })
-          .catch((err) => {
-            console.error(err);
-            next(err);
-          });
-      }
-    }).catch((err) => {
-      console.error(err);
-      next(err);
+router.post('/signup', isNotSignIn, async (req, res, next) => {
+  try{
+    const exUser = await User.findOne({email: req.body.email});
+    if (exUser) {
+      return res.send({ result: false, message: '이메일이 중복됩니다.' });
+    }
+    const user = new User({
+      nickname: req.body.nickname,
+      password: req.body.password,
+      email: req.body.email,
     });
+    const hash = bcrypt.hashSync(user.password, 12);
+    user.password = hash;
+    const result = await user.save();
+    return res.status(201).send({ result: true, message: '회원 가입에 성공했습니다.' });
+  }catch(err){
+    next(err);
+  }
 });
 
 router.get('/kakao', passport.authenticate('kakao'));

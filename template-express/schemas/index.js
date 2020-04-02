@@ -7,11 +7,11 @@ module.exports = () => {
   const connect = () => {
     mongoose.connect(MONGO_URL,{
       useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
-    }).then(()=>console.log('MongoDB Connected...'))
+    })
+    .then(()=>console.log('MongoDB Connected...'))
     .catch((err)=>console.log(err)); 
   };
   connect();
-
   mongoose.connection.on('error', (error) => {
     console.error('몽고디비 연결 에러', error);
   });
@@ -19,6 +19,6 @@ module.exports = () => {
     console.error('몽고디비 연결이 끊겼습니다. 연결을 재시도합니다.');
     connect();
   });
-
   require('./user');
+  require('./file');
 };

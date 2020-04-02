@@ -1,7 +1,8 @@
 // import modules
 const express = require('express');
-const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const cors = require('cors')
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv')
 const passport = require('passport');
@@ -12,13 +13,17 @@ dotenv.config();
 // import component
 const indexRouter = require('./routes');
 const authRouter = require('./routes/auth');
-const connect = require('./schemas');
+const fileRouter = require('./routes/file');
+const dbconnect = require('./schemas');
 const passportConfig = require('./passport');
 // call func of compoent
-connect();
+dbconnect();
 passportConfig(passport);
-// setting app
-app.set('port', process.env.PORT || 5000);
+// set middleware
+app.use(logger('dev'));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "./client/build")));
+}
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,28 +39,40 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "./client/build")));
-}
-// route
-app.use('/auth',authRouter);
+// set middleware - route
 app.use('/', indexRouter);
-app.get('*', function (req, res){
-  res.sendFile(path.join(__dirname, "./client/build", "index.html"));
+app.use('/auth',authRouter);
+app.use('/file',fileRouter);
+// set moddleware - route - other
+app.get('*', function (req, res, next){
+  if (process.env.NODE_ENV === "production") {
+    res.sendFile(path.join(__dirname, "./client/build", "index.html"));
+  }else{
+    next();
+  }
 })
-// error
+// set middleware - 404 error
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
+// set middleware - 500 error
 app.use((err, req, res, next) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.send('error');
+  if (!err.status) err.status = 500;
+  res.status(err.status);
+  res.send({
+    error: process.env.NODE_ENV === 'dev'
+      ? {
+        status : err.status,
+        message: err.message
+      }
+      : {
+        status : err.status,
+        message: err.message
+      }});
 });
-// set port
-app.listen(app.get('port'), () => {
-  console.log(app.get('port'), '번 포트에서 대기중');
+// set port and server
+app.listen(process.env.PORT || 5000, () => {
+  console.log(process.env.PORT || 5000, '번 포트에서 대기중');
 });
