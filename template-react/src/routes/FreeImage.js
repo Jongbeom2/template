@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -65,11 +65,37 @@ const useStyles = makeStyles((theme) => ({
     height: '20rem',
   }
 }));
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const FreeImage = () => {
   const [open, setOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPrevieURL] = useState(null);
+  const [imageList, setImageList] = useState([]);
+  useEffect(() => {
+    getImageList();
+  }, []);
+  const getImageList = () =>{
+    const imageList = [];
+    axios.get('/file/img')
+      .then(res => {
+        if (res.data.result){
+          res.data.imageList.forEach(image=>{
+            console.log(image.data);
+            imageList.push({
+              id: image.id,
+              src: "data:image/jpeg;base64," + image.data
+            })
+          });
+          setImageList(imageList);
+          console.log(imageList);
+          console.log('[Get] /file/img', res.data.message);
+        }else{
+          console.log('[Get] /file/img', res.data.message);
+        }
+      })
+      .catch(error=>{
+        console.log(error);
+      })
+  };
   const handleFileChange = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
@@ -91,6 +117,9 @@ const FreeImage = () => {
       .then(res=>{
         console.log(res);
         handleClose();
+      })
+      .catch(error=>{
+        console.log(error);
       })
   };
   const handleClickOpen = () => {
@@ -119,12 +148,12 @@ const FreeImage = () => {
       </Container>
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
-          {cards.map((card) => (
-            <Grid item key={card} xs={12} sm={6} md={4}>
+          {imageList.map((image) => (
+            <Grid item key={image.id} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
-                  image="https://source.unsplash.com/random"
+                  image= {image.src}
                   title="Image title"
                 />
                 <CardContent className={classes.cardContent}>
@@ -172,7 +201,6 @@ const FreeImage = () => {
               Upload
             </label>
           </Button>}
-          
         </DialogContent>
         <DialogActions className={classes.dialogActionBtn}>
           <Button variant="contained" onClick={handleFileSubmit} color="primary">

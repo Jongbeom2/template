@@ -4,10 +4,11 @@ const multer = require('multer');
 const fs = require('fs');
 const router = express.Router();
 const storage = multer.diskStorage({
-  limit: {fileSize:5*1024*1024}
+  
 })
 const upload = multer({
-  storage:storage
+  storage:storage,
+  limits: { fileSize: 1 * 1024 * 1024 },
 })
 router.post('/img', upload.single('image'), async (req, res, next) => {
   try{
@@ -22,5 +23,22 @@ router.post('/img', upload.single('image'), async (req, res, next) => {
   }catch(error){
     next(error);
   }  
+});
+router.get('/img', async(req,res,next)=>{
+  try{
+    const result = await File.find();
+    const imageList = [];
+    result.forEach(image=>{
+      const imageObj = {
+        id: image._id,
+        data : image.image.toString('base64')
+      }
+      imageList.push(imageObj);
+    });
+    
+    return res.send({result:true, message: '이미지 리스트를 불러오는데 성공했습니다.' , imageList: imageList});
+  }catch(error){
+    next(error);
+  }
 });
 module.exports = router;
