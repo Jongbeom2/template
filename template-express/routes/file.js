@@ -2,6 +2,7 @@ const express = require('express');
 const File = require('../schemas/file');
 const multer = require('multer');
 const fs = require('fs');
+const { isSignedIn } = require('./middlewares');
 const router = express.Router();
 const storage = multer.diskStorage({
   
@@ -10,11 +11,13 @@ const upload = multer({
   storage:storage,
   limits: { fileSize: 1 * 1024 * 1024 },
 })
-router.post('/img', upload.single('image'), async (req, res, next) => {
+router.post('/img', isSignedIn,  upload.single('image'), async (req, res, next) => {
   try{
     const img = fs.readFileSync(req.file.path);
     const encode_img = img.toString('base64');
     const file = new File({
+      name: req.body.name,
+      email: req.user.email,
       contentType: req.file.mimetype,
       image: new Buffer.from(encode_img,'base64')
     });
@@ -30,7 +33,8 @@ router.get('/img', async(req,res,next)=>{
     const imageList = [];
     result.forEach(image=>{
       const imageObj = {
-        id: image._id,
+        email: image.email,
+        name: image.name,
         data : image.image.toString('base64')
       }
       imageList.push(imageObj);

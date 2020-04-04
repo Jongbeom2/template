@@ -7,13 +7,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import ImageUploadDialog from '../components/dialog/ImageUpload';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -43,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(6),
   },
   dialogFileName:{
-    width: '30rem'
+    width: '30rem',
   },
   dialogUploadBtn:{
     width: '30rem',
@@ -63,12 +59,13 @@ const useStyles = makeStyles((theme) => ({
     overflowY: 'scroll',
     overflowX: 'hidden',
     height: '20rem',
-  }
+  },
+  message:{
+    marginTop: theme.spacing(1),
+  },
 }));
 const FreeImage = () => {
-  const [open, setOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewURL, setPrevieURL] = useState(null);
+  const [openImageUploadDialog, setOpenImageUploadDialog] = useState(false);
   const [imageList, setImageList] = useState([]);
   useEffect(() => {
     getImageList();
@@ -79,16 +76,13 @@ const FreeImage = () => {
       .then(res => {
         if (res.data.result){
           res.data.imageList.forEach(image=>{
-            console.log(image.data);
             imageList.push({
-              id: image.id,
+              name: image.name,
+              email: image.email,
               src: "data:image/jpeg;base64," + image.data
             })
           });
           setImageList(imageList);
-          console.log(imageList);
-          console.log('[Get] /file/img', res.data.message);
-        }else{
           console.log('[Get] /file/img', res.data.message);
         }
       })
@@ -96,37 +90,12 @@ const FreeImage = () => {
         console.log(error);
       })
   };
-  const handleFileChange = (e) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    setSelectedFile(file);
-    const reader = new FileReader();
-    // Read File
-		if (file) {
-			reader.readAsDataURL(file);
-		}
-		// Draw
-		reader.onload = (e) => {
-			setPrevieURL(e.target.result);
-		}
+  const handleClickOpenImageUploadDialog = () => {
+    setOpenImageUploadDialog(true);
   };
-  const handleFileSubmit = () => {
-    const fd = new FormData();
-    fd.append('image',selectedFile);
-    axios.post('/file/img',fd)
-      .then(res=>{
-        console.log(res);
-        handleClose();
-      })
-      .catch(error=>{
-        console.log(error);
-      })
-  };
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickCloseImageUploadDialog = () => {
+    setOpenImageUploadDialog(false);
+    getImageList();
   };
   const classes = useStyles();
   return (
@@ -137,10 +106,11 @@ const FreeImage = () => {
         </Typography>
         <Typography variant="h5" align="center" color="textSecondary" paragraph>
           These are free image collections. You can upload or download images.
+          The size of image is limited to 1MB.
         </Typography>
         <div className={classes.buttons}>
           <Grid container spacing={2} justify="center">
-            <Button variant="contained" color="primary" onClick={handleClickOpen}>
+            <Button variant="contained" color="primary" onClick={handleClickOpenImageUploadDialog}>
               Submit a photo
             </Button>
           </Grid>
@@ -149,7 +119,7 @@ const FreeImage = () => {
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
           {imageList.map((image) => (
-            <Grid item key={image.id} xs={12} sm={6} md={4}>
+            <Grid item key={image.name} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
@@ -158,10 +128,10 @@ const FreeImage = () => {
                 />
                 <CardContent className={classes.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Heading
+                    {image.name}
                   </Typography>
                   <Typography>
-                    This is a media card. You can use this section to describe the content.
+                    {'Uploaded by ' + image.email}
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -169,7 +139,7 @@ const FreeImage = () => {
                     View
                   </Button>
                   <Button size="small" color="primary">
-                    Edit
+                    Download
                   </Button>
                 </CardActions>
               </Card>
@@ -177,40 +147,9 @@ const FreeImage = () => {
           ))}
         </Grid>
       </Container>
-      <Dialog
-        open={open}
-        onClose={handleClose}>
-        <DialogTitle> {"Image Upload"}</DialogTitle>
-        <DialogContent className={classes.dialogFileName}>
-          <TextField
-          variant="outlined"
-          required
-          fullWidth
-          label="Image Name"
-          type="text"/>
-          <input type="file" onChange={handleFileChange} style={{display: 'none'}} id="file" name="file"/>
-          {selectedFile
-          ?
-          <div className={classes.dialogUploadBtn}>
-            <div className={classes.imgPreviewContainer}>
-              <img className={classes.imgPreview} src={previewURL}/>
-            </div>
-          </div>
-          :<Button className = {classes.dialogUploadBtn}>
-            <label for="file" style={{ width: '100%', height:'20rem',lineHeight:'20rem'}}>
-              Upload
-            </label>
-          </Button>}
-        </DialogContent>
-        <DialogActions className={classes.dialogActionBtn}>
-          <Button variant="contained" onClick={handleFileSubmit} color="primary">
-            Submit
-          </Button>
-          <Button variant ="outlined" onClick={handleClose} color="primary" autoFocus>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {openImageUploadDialog
+      ?<ImageUploadDialog handleClickCloseImageUploadDialog = {handleClickCloseImageUploadDialog}/>
+      :null}
     </div>
   )
 }

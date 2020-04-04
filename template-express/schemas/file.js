@@ -9,8 +9,13 @@ const fileSchema = new Schema({
     type: Buffer,
     required: true,
   },
+  name:{
+    type: String,
+    required: true,
+  },
   email:{
     type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
