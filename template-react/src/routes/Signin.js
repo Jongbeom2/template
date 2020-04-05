@@ -107,8 +107,8 @@ const Signin = () => {
 		})
   }
   const handleClickKakao = () => {
-    //window.location.href = 'http://localhost:5000/auth/kakao';
-    window.location.href = 'https://jb-template.herokuapp.com/auth/kakao';
+    window.location.href = 'http://localhost:5000/auth/kakao';
+    //window.location.href = 'https://jb-template.herokuapp.com/auth/kakao';
   }
   const handleClickSignUp = () =>{
     history.push('/signup');

@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -9,7 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import ImageUploadDialog from '../components/dialog/ImageUpload';
+import materialImg from '../image/material-ui.png';
+import jumpImg from '../image/jump.png';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -64,90 +64,76 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
 }));
-const FreeImage = () => {
-  const [openImageUploadDialog, setOpenImageUploadDialog] = useState(false);
-  const [imageList, setImageList] = useState([]);
-  useEffect(() => {
-    getImageList();
-  }, []);
-  const getImageList = () =>{
-    const imageList = [];
-    axios.get('/file/img')
-      .then(res => {
-        if (res.data.result){
-          res.data.imageList.forEach(image=>{
-            const arrayBufferView = new Uint8Array( image.data.data );
-            const blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } )
-            const url = URL.createObjectURL(blob, { type: "image/jpeg" } );
-            console.log(url)
-            imageList.push({
-              name: image.name,
-              email: image.email,
-              src: url
-            })
-          });
-          setImageList(imageList);
-          console.log('[Get] /file/img', res.data.message);
-        }
-      })
-      .catch(error=>{
-        console.log(error);
-      })
+const projectList = [{
+    name: 'Material-UI Tutorial Project',
+    description: 'Des1',
+    imgSrc: materialImg,
+    sourceLink: 'https://jongbeom-dev.tistory.com/category/React%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/Material-UI%20%EC%8B%A4%EC%8A%B5',
+    deployLink: 'https://jongbeom-dev.tistory.com/category/React%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/Material-UI%20%EC%8B%A4%EC%8A%B5',
+    blogLink: 'https://jongbeom-dev.tistory.com/category/React%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/Material-UI%20%EC%8B%A4%EC%8A%B5'
+  },{
+    name: 'Jump Game',
+    description: 'Des2',
+    imgSrc: jumpImg,
+    sourceLink: 'https://gitlab.com/n113345/game-jump',
+    deployLink: 'https://game-4a862.firebaseapp.com',
+    blogLink: 'https://jongbeom-dev.tistory.com/category/React%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B3%B5%EB%A3%A1%20%EC%A0%90%ED%94%84%20%EA%B2%8C%EC%9E%84'
+  }
+]
+const SideProject = () => {
+  const handleClickView = () => {
+    
   };
-  const handleClickOpenImageUploadDialog = () => {
-    setOpenImageUploadDialog(true);
+  const handleClickSource = () => {
+    
   };
-  const handleClickCloseImageUploadDialog = () => {
-    setOpenImageUploadDialog(false);
-    getImageList();
-  };
-  const handleClickView = (src) => {
-    window.open(src);
-  };
+  const handleClickBlog = () => {
+
+  }
   const classes = useStyles();
-  return (
+  return(
     <div className={classes.root}>
       <Container maxWidth="sm">
         <Typography variant="h4" align="center" color="textPrimary" gutterBottom>
-          Free Image
+          Side Projects
         </Typography>
         <Typography variant="h5" align="center" color="textSecondary" paragraph>
-          These are free image collections. You can upload or download images.
-          The size of image is limited to 1MB. You must signin to upload images.
+          These are Jongbeom Lee's Side Projects. Click [Source] buttons to check the source in gitlab
+          or [Visit] button to visit deployed projects or [Blog] button to visit blog written in Korean.
         </Typography>
-        <div className={classes.buttons}>
-          <Grid container spacing={2} justify="center">
-            <Button variant="contained" color="primary" onClick={handleClickOpenImageUploadDialog}>
-              Submit a photo
-            </Button>
-          </Grid>
-        </div>
       </Container>
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
-          {imageList.map((image) => (
-            <Grid item key={image.name} xs={12} sm={6} md={4}>
+          {projectList.map((project) => (
+            <Grid item key={project.name} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
-                  image= {image.src}
+                  image= {project.imgSrc}
                   title="Image title"
                 />
                 <CardContent className={classes.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    {image.name}
+                    {project.name}
                   </Typography>
                   <Typography>
-                    {'Uploaded by ' + image.email}
+                    {project.description}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" color="primary" onClick={()=>{handleClickView(image.src)}}>
-                    View
+                  <a href={project.deployLink } style={{textDecoration: 'none'}} target="_blank">
+                  <Button size="small" color="primary" onClick={handleClickView}>
+                    Visit
                   </Button>
-                  <a href={image.src } download={image.name} style={{textDecoration: 'none'}}>
+                  </a>
+                  <a href={project.sourceLink } style={{textDecoration: 'none'}} target="_blank">
+                  <Button size="small" color="primary" onClick={handleClickSource}>
+                    Source
+                  </Button>
+                  </a>
+                  <a href={project.blogLink } style={{textDecoration: 'none'}} target="_blank">
                   <Button size="small" color="primary">
-                    Download
+                    Blog
                   </Button>
                   </a>
                 </CardActions>
@@ -156,11 +142,8 @@ const FreeImage = () => {
           ))}
         </Grid>
       </Container>
-      {openImageUploadDialog
-      ?<ImageUploadDialog handleClickCloseImageUploadDialog = {handleClickCloseImageUploadDialog}/>
-      :null}
     </div>
   )
 }
 
-export default FreeImage;
+export default SideProject;

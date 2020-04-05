@@ -15,11 +15,16 @@ router.post('/img', isSignedIn,  upload.single('image'), async (req, res, next) 
   try{
     const img = fs.readFileSync(req.file.path);
     const encode_img = img.toString('base64');
+    let email = req.user.email;
+    if (!email){
+      email = req.user.nickname+'@' + req.user.provider;
+    }
+    console.log(email);
     const file = new File({
       name: req.body.name,
-      email: req.user.email,
+      email: email,
       contentType: req.file.mimetype,
-      image: new Buffer.from(encode_img,'base64')
+      data: new Buffer.from(encode_img,'base64')
     });
     const result = await file.save();
     return res.status(201).send({ result: true, message: '업로드에 성공했습니다.' });
@@ -35,7 +40,7 @@ router.get('/img', async(req,res,next)=>{
       const imageObj = {
         email: image.email,
         name: image.name,
-        data : image.image.toString('base64')
+        data : image.data
       }
       imageList.push(imageObj);
     });

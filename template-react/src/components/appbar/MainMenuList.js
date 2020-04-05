@@ -19,11 +19,11 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Home" />
     </ListItem>
-    <ListItem button component = {Link} to ="/portfolio">
+    <ListItem button component = {Link} to ="/sideproject">
       <ListItemIcon>
         <AppsIcon />
       </ListItemIcon>
-      <ListItemText primary="Portfolio" />
+      <ListItemText primary="Side Project" />
     </ListItem>
     <ListItem button component = {Link} to ="/freeimage">
       <ListItemIcon>

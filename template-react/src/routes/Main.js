@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Home from './Home';
-import Portfolio from './Portfolio'
+import SideProject from './SideProject'
 import APIList from './APIList';
 import Appkey from './AppKey';
 import Video from './Video';
@@ -54,7 +54,7 @@ const Main = () => {
           <Grid container spacing={3}>
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
-            <Route exact path="/portfolio" component={Portfolio} />
+            <Route exact path="/sideproject" component={SideProject} />
             <Route exact path="/freeimage" component={FreeImage} />
             <Route exact path="/video" component={Video} />
             <Route exact path="/apilist" component={APIList} />
