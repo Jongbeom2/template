@@ -19,14 +19,13 @@ router.post('/img', isSignedIn,  upload.single('image'), async (req, res, next) 
     if (!email){
       email = req.user.nickname+'@' + req.user.provider;
     }
-    console.log(email);
     const file = new File({
       name: req.body.name,
       email: email,
       contentType: req.file.mimetype,
       data: new Buffer.from(encode_img,'base64')
     });
-    const result = await file.save();
+    await file.save();
     return res.status(201).send({ result: true, message: '업로드에 성공했습니다.' });
   }catch(error){
     next(error);
@@ -35,17 +34,7 @@ router.post('/img', isSignedIn,  upload.single('image'), async (req, res, next) 
 router.get('/img', async(req,res,next)=>{
   try{
     const result = await File.find();
-    const imageList = [];
-    result.forEach(image=>{
-      const imageObj = {
-        email: image.email,
-        name: image.name,
-        data : image.data
-      }
-      imageList.push(imageObj);
-    });
-    
-    return res.send({result:true, message: '이미지 리스트를 불러오는데 성공했습니다.' , imageList: imageList});
+    return res.send({result:true, message: '이미지 리스트를 불러오는데 성공했습니다.' , imageList: result});
   }catch(error){
     next(error);
   }

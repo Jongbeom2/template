@@ -7,8 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Home from './Home';
 import SideProject from './SideProject'
 import APIList from './APIList';
-import Appkey from './AppKey';
-import Video from './Video';
+import APIKey from './APIKey';
 import FreeImage from './FreeImage';
 import AuthRoute from '../components/auth/AuthRoute';
 import AppbarMain from '../components/appbar/AppbarMain';
@@ -56,10 +55,9 @@ const Main = () => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/sideproject" component={SideProject} />
             <Route exact path="/freeimage" component={FreeImage} />
-            <Route exact path="/video" component={Video} />
             <Route exact path="/apilist" component={APIList} />
-            <AuthRoute isSignedin={isSignedin} path="/appkey">
-              <Appkey />
+            <AuthRoute isSignedin={isSignedin} path="/apikey">
+              <APIKey />
             </AuthRoute>
           </Grid>
         </Container>

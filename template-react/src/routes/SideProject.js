@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,6 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import materialImg from '../image/material-ui.png';
 import jumpImg from '../image/jump.png';
+import aiImg from '../image/ai.png';
+import lunchBoxImg from '../image/lunch-box.png';
+import javascriptImg from '../image/javascript.png';
+import painterImg from '../image/painter.png';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -64,31 +69,20 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
 }));
-const projectList = [{
-    name: 'Material-UI Tutorial Project',
-    description: 'Des1',
-    imgSrc: materialImg,
-    sourceLink: 'https://jongbeom-dev.tistory.com/category/React%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/Material-UI%20%EC%8B%A4%EC%8A%B5',
-    deployLink: 'https://jongbeom-dev.tistory.com/category/React%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/Material-UI%20%EC%8B%A4%EC%8A%B5',
-    blogLink: 'https://jongbeom-dev.tistory.com/category/React%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/Material-UI%20%EC%8B%A4%EC%8A%B5'
-  },{
-    name: 'Jump Game',
-    description: 'Des2',
-    imgSrc: jumpImg,
-    sourceLink: 'https://gitlab.com/n113345/game-jump',
-    deployLink: 'https://game-4a862.firebaseapp.com',
-    blogLink: 'https://jongbeom-dev.tistory.com/category/React%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EA%B3%B5%EB%A3%A1%20%EC%A0%90%ED%94%84%20%EA%B2%8C%EC%9E%84'
-  }
-]
+const imageSrcList = { materialImg, jumpImg, aiImg, lunchBoxImg, javascriptImg, painterImg}
 const SideProject = () => {
-  const handleClickView = () => {
-    
-  };
-  const handleClickSource = () => {
-    
-  };
-  const handleClickBlog = () => {
-
+  const [projectList, setProjectList] = useState([]);
+  useEffect(() => {
+    getProjectList();
+  }, []);
+  async function getProjectList () {
+    try{
+      const res = await axios.get('/project')
+      setProjectList(res.data.projectList);
+      console.log('[Get] /project', res.data.message);
+    }catch(error){
+      console.log(error);
+    }
   }
   const classes = useStyles();
   return(
@@ -98,8 +92,7 @@ const SideProject = () => {
           Side Projects
         </Typography>
         <Typography variant="h5" align="center" color="textSecondary" paragraph>
-          These are Jongbeom Lee's Side Projects. Click [Source] buttons to check the source in gitlab
-          or [Visit] button to visit deployed projects or [Blog] button to visit blog written in Korean.
+          These are Jongbeom Lee's Side Projects.
         </Typography>
       </Container>
       <Container className={classes.cardGrid} maxWidth="md">
@@ -109,7 +102,7 @@ const SideProject = () => {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
-                  image= {project.imgSrc}
+                  image= {imageSrcList[project.imgSrc]}
                   title="Image title"
                 />
                 <CardContent className={classes.cardContent}>
@@ -122,12 +115,12 @@ const SideProject = () => {
                 </CardContent>
                 <CardActions>
                   <a href={project.deployLink } style={{textDecoration: 'none'}} target="_blank">
-                  <Button size="small" color="primary" onClick={handleClickView}>
+                  <Button size="small" color="primary" >
                     Visit
                   </Button>
                   </a>
                   <a href={project.sourceLink } style={{textDecoration: 'none'}} target="_blank">
-                  <Button size="small" color="primary" onClick={handleClickSource}>
+                  <Button size="small" color="primary">
                     Source
                   </Button>
                   </a>

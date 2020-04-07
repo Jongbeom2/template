@@ -16,7 +16,6 @@ router.post('/check', (req, res, next) => {
 router.post('/signin', isNotSignIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {
-      console.error(authError);
       return res.send({ result: false, type: 'useError', message: '로그인중 에러가 발생했습니다.' })
     }
     if (!user) {
@@ -24,7 +23,6 @@ router.post('/signin', isNotSignIn, (req, res, next) => {
     }
     return req.login(user, (loginError) => {
       if (loginError) {
-        console.error(loginError);
         res.send({ result: false, type: 'loginError', message: '로그인중 에러가 발생했습니다.' })
       }
       return res.send({ result: user, message: '로그인에 성공했습니다.' });
@@ -54,10 +52,10 @@ router.post('/signup', isNotSignIn, async (req, res, next) => {
     });
     const hash = bcrypt.hashSync(user.password, 12);
     user.password = hash;
-    const result = await user.save();
+    await user.save();
     return res.status(201).send({ result: true, message: '회원 가입에 성공했습니다.' });
-  }catch(err){
-    next(err);
+  }catch(error){
+    next(error);
   }
 });
 

@@ -14,6 +14,8 @@ dotenv.config();
 const indexRouter = require('./routes');
 const authRouter = require('./routes/auth');
 const fileRouter = require('./routes/file');
+const projectRouter = require('./routes/project');
+const apikeyRouter = require('./routes/apikey');
 const dbconnect = require('./schemas');
 const passportConfig = require('./passport');
 // call func of compoent
@@ -43,6 +45,8 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/auth',authRouter);
 app.use('/file',fileRouter);
+app.use('/project',projectRouter);
+app.use('/apikey',apikeyRouter);
 // set moddleware - route - other
 app.get('*', function (req, res, next){
   if (process.env.NODE_ENV === "production") {

@@ -7,7 +7,6 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import HomeIcon from '@material-ui/icons/Home';
 import AppsIcon from '@material-ui/icons/Apps';
 import ImageIcon from '@material-ui/icons/Image';
-import MovieIcon from '@material-ui/icons/Movie';
 import SettingsIcon from '@material-ui/icons/Settings';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -31,23 +30,17 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Free Image" />
     </ListItem>
-    <ListItem button component = {Link} to ="/video">
-      <ListItemIcon>
-        <MovieIcon />
-      </ListItemIcon>
-      <ListItemText primary="Video" />
-    </ListItem>
     <ListItem button component = {Link} to ="/apilist">
       <ListItemIcon>
         <SettingsIcon />
       </ListItemIcon>
       <ListItemText primary="API List" />
     </ListItem>
-    <ListItem button component = {Link} to ="/appkey">
+    <ListItem button component = {Link} to ="/apikey">
       <ListItemIcon>
         <VpnKeyIcon />
       </ListItemIcon>
-      <ListItemText primary="App Key" />
+      <ListItemText primary="API Key" />
     </ListItem>
   </div>
 );
