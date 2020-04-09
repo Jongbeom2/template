@@ -16,6 +16,7 @@ const authRouter = require('./routes/auth');
 const fileRouter = require('./routes/file');
 const projectRouter = require('./routes/project');
 const apikeyRouter = require('./routes/apikey');
+const v1 = require('./routes/v1');
 const dbconnect = require('./schemas');
 const passportConfig = require('./passport');
 // call func of compoent
@@ -47,6 +48,7 @@ app.use('/auth',authRouter);
 app.use('/file',fileRouter);
 app.use('/project',projectRouter);
 app.use('/apikey',apikeyRouter);
+app.use('/v1',v1);
 // set moddleware - route - other
 app.get('*', function (req, res, next){
   if (process.env.NODE_ENV === "production") {

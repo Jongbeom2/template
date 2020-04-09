@@ -20,6 +20,7 @@ router.post('/img', isSignedIn,  upload.single('image'), async (req, res, next) 
       email = req.user.nickname+'@' + req.user.provider;
     }
     const file = new File({
+      userId: req.user._id,
       name: req.body.name,
       email: email,
       contentType: req.file.mimetype,
