@@ -11,11 +11,13 @@ const path = require('path');
 const app = express();
 dotenv.config();
 // import component
+const webSocket = require('./socket');
 const indexRouter = require('./routes');
 const authRouter = require('./routes/auth');
 const fileRouter = require('./routes/file');
 const projectRouter = require('./routes/project');
-const apikeyRouter = require('./routes/apikey');
+const apiKeyRouter = require('./routes/apikey');
+const apiDocRouter = require('./routes/apidoc');
 const v1 = require('./routes/v1');
 const dbconnect = require('./schemas');
 const passportConfig = require('./passport');
@@ -31,7 +33,7 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(session({
+const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
   secret: process.env.COOKIE_SECRET,
@@ -39,7 +41,8 @@ app.use(session({
     httpOnly: true,
     secure: false,
   },
-}));
+})
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 // set middleware - route
@@ -47,7 +50,8 @@ app.use('/', indexRouter);
 app.use('/auth',authRouter);
 app.use('/file',fileRouter);
 app.use('/project',projectRouter);
-app.use('/apikey',apikeyRouter);
+app.use('/apikey',apiKeyRouter);
+app.use('/apidoc',apiDocRouter);
 app.use('/v1',v1);
 // set moddleware - route - other
 app.get('*', function (req, res, next){
@@ -79,6 +83,8 @@ app.use((err, req, res, next) => {
       }});
 });
 // set port and server
-app.listen(process.env.PORT || 5000, () => {
+const server = app.listen(process.env.PORT || 5000, () => {
   console.log(process.env.PORT || 5000, '번 포트에서 대기중');
 });
+// set websocket
+webSocket(server, app, sessionMiddleware);

@@ -30,13 +30,13 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Free Image" />
     </ListItem>
-    <ListItem button component = {Link} to ="/apilist">
+    <ListItem button component = {Link} to ="/openapidoc">
       <ListItemIcon>
         <SettingsIcon />
       </ListItemIcon>
-      <ListItemText primary="API List" />
+      <ListItemText primary="API Doc" />
     </ListItem>
-    <ListItem button component = {Link} to ="/apikey">
+    <ListItem button component = {Link} to ="/openapikey">
       <ListItemIcon>
         <VpnKeyIcon />
       </ListItemIcon>

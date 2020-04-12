@@ -52,12 +52,13 @@ const APIKey = () => {
     try{
       const res = await axios.get('/apikey');
       setAPIKeyList(res.data.apiKeyList);
-      console.log('[Post] /apikey', res.data.message);
+      console.log('[Get] /apikey', res.data.message);
     }catch(error){
       console.log(error);
     }
   }
   const handleClickCloseDialog = () => {
+    getAPIKeyList();
     setOpenDialog(false);
   }
   const handleClickOpenDialog = () => {

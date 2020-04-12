@@ -6,15 +6,16 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Home from './Home';
 import SideProject from './SideProject'
-import APIList from './APIList';
+import APIDoc from './APIDoc';
 import APIKey from './APIKey';
 import FreeImage from './FreeImage';
 import AuthRoute from '../components/auth/AuthRoute';
 import AppbarMain from '../components/appbar/AppbarMain';
+import ChatButton from '../components/chat/Button'
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    background: theme.palette.background.paper
+    background: theme.palette.background.paper,
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -47,7 +48,7 @@ const Main = () => {
   return (
     <div  className={classes.root} >
       <AppbarMain isSignedin={isSignedin} />
-      <div className={classes.content}>
+      <div className={classes.content} >
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
@@ -55,13 +56,14 @@ const Main = () => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/sideproject" component={SideProject} />
             <Route exact path="/freeimage" component={FreeImage} />
-            <Route exact path="/apilist" component={APIList} />
-            <AuthRoute isSignedin={isSignedin} path="/apikey">
+            <Route exact path="/openapidoc" component={APIDoc} />
+            <AuthRoute isSignedin={isSignedin} path="/openapikey">
               <APIKey />
             </AuthRoute>
           </Grid>
         </Container>
       </div>
+      <ChatButton />
     </div >
   );
 }
