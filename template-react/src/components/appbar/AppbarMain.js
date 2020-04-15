@@ -16,7 +16,7 @@ import { mainListItems, secondaryListItems } from './MainMenuList';
 import AppbarMainProfile from './AppbarMainProfile';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
-import { PaletteTypeContext } from '../../App';
+import { ThemeTypeContext } from '../../App';
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MainAppBar = (props) => {
-  const { paletteType, setPaletteType } = useContext(PaletteTypeContext);
+  const { themeType, setThemeType } = useContext(ThemeTypeContext);
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(true);
@@ -103,10 +103,10 @@ const MainAppBar = (props) => {
     history.push('/signin');
   }
   const handleClickTheme = () => {
-    if (paletteType === 'dark'){
-      setPaletteType('light');
-    }else if (paletteType === 'light'){
-      setPaletteType('dark');
+    if (themeType === 'dark'){
+      setThemeType('light');
+    }else if (themeType === 'light'){
+      setThemeType('dark');
     }
   }
   return (
@@ -124,7 +124,7 @@ const MainAppBar = (props) => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             JB's Template
           </Typography>
-          {paletteType === 'dark'
+          {themeType === 'dark'
             ? <Brightness7Icon className={classes.iconButton} onClick={handleClickTheme} />
             : <Brightness4Icon className={classes.iconButton} onClick={handleClickTheme} />}
           {props.isSignedin

@@ -5,7 +5,17 @@ import Signin from './routes/Signin';
 import Signup from './routes/Signup'
 import Main from './routes/Main'
 import './App.css';
+/** 
+ * @author : 이종범
+ * @description
+ * 앱의 첫 번째 component로 theme과 router를 설정함.
+ * @since : 2020.04.15
+*/
 const themeLight = createMuiTheme({
+	/**
+	 * @description
+	 * 밝은 theme 객체를 정의함.
+	 */
 	palette: {
 		primary: {
 			main: '#1976d2',
@@ -20,6 +30,10 @@ const themeLight = createMuiTheme({
 	},
 })
 const themeDark = createMuiTheme({
+	/**
+	 * @description
+	 * 어두운 theme 객체를 정의함.
+	 */
 	palette: {
 		background: {
 			paper: '#303030'
@@ -37,20 +51,24 @@ const themeDark = createMuiTheme({
 		}
 	},
 })
-export const PaletteTypeContext = createContext({
+export const ThemeTypeContext = createContext({
+	/**
+	 * @description
+	 * 다른 component에서 themeType을 읽고 수정할 수 있도록 context를 정의함.
+	 * themeType에 따라  ThemeProvider에 적절한 theme을 전달함
+	 */
 	paletteType: {},
 	setPaletteType: {},
 });
-
 const App = () => {
-	const [paletteType, setPaletteType] = useState('light');
+	const [themeType, setThemeType] = useState('light');
 	const value = {
-		paletteType,
-		setPaletteType
+		themeType,
+		setThemeType
 	}
 	return (
-		<PaletteTypeContext.Provider value={value}>
-			<ThemeProvider theme={paletteType === 'light' ? themeLight : themeDark}>
+		<ThemeTypeContext.Provider value={value}>
+			<ThemeProvider theme={themeType === 'light' ? themeLight : themeDark}>
 				<BrowserRouter>
 					<Switch>
 						<Route exact path="/signin" component={Signin} />
@@ -59,7 +77,7 @@ const App = () => {
 					</Switch>
 				</BrowserRouter>
 			</ThemeProvider>
-		</PaletteTypeContext.Provider>
+		</ThemeTypeContext.Provider>
 	);
 }
 

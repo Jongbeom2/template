@@ -13,6 +13,14 @@ router.post('/check', (req, res, next) => {
   }
 });
 
+router.get('/id',isSignedIn, (req, res, next) => {
+  if (req.user) {
+    return res.send({ result: true, id:req.user._id, message: '아이디를 성공적으로 불러왔습니다.' });
+  } else {
+    return res.send({ result: false, message: '로그인 상태가 아닙니다.' });
+  }
+});
+
 router.post('/signin', isNotSignIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +12,19 @@ import FreeImage from './FreeImage';
 import AuthRoute from '../components/auth/AuthRoute';
 import AppbarMain from '../components/appbar/AppbarMain';
 import ChatButton from '../components/chat/Button'
+/** 
+ * @author : 이종범
+ * @description
+ * Main component로 Appbar component를 불러 오고 router를 설정함.
+ * 로그인 유무를 체크하고 로그인과 상관없는 router는 그대로 두고
+ * 로그인을 해야 접근할 수 있는 router는 AuthRoute에 로그인 유무와 함께 전달함.
+ * @since : 2020.04.15
+*/
 const useStyles = makeStyles(theme => ({
+  /** 
+  * @description
+  * Main component의 style과 className을 정의함.
+  */
   root: {
     display: 'flex',
     background: theme.palette.background.paper,
@@ -34,19 +46,26 @@ const Main = () => {
   useEffect(() => {
     getUser();
   }, []);
-  const getUser = () => {
-    axios.post('/auth/check')
-		.then(res => {
-			if (res.data.result){
+  /** 
+  * @description
+  * /auth/check로 요청하여 로그인 유무를 받음
+  * res.data.result에 로그인 유무가 저장되어 있음.
+  */
+  async function getUser() {
+    try {
+      const res = await axios.post('/auth/check');
+      if (res.data.result) {
         setIsSignedin(true);
-        console.log('[Post] /auth/check',res.data.message);
-			}else{
-        console.log('[Post] /auth/check',res.data.message);
+        console.log('[Post] /auth/check', res.data.message);
+      } else {
+        console.log('[Post] /auth/check', res.data.message);
       }
-		})
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
-    <div  className={classes.root} >
+    <div className={classes.root} >
       <AppbarMain isSignedin={isSignedin} />
       <div className={classes.content} >
         <div className={classes.appBarSpacer} />
@@ -63,9 +82,8 @@ const Main = () => {
           </Grid>
         </Container>
       </div>
-      <ChatButton />
+      <ChatButton isSignedin={isSignedin} />
     </div >
   );
 }
-
 export default Main;

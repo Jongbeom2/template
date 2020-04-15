@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CommentIcon from '@material-ui/icons/Comment';
 import ClearIcon from '@material-ui/icons/Clear';
-import MessageList from './MessageList'
+import ChatList from './ChatList'
+import {useHistory} from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'fixed',
@@ -22,14 +23,19 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer'
   }
 }));
-const Button = () => {
+const Button = ({isSignedin}) => {
   const classes = useStyles();
+  const history = useHistory();
   const [open, setOpen] = useState(false);
   const handleClick = () =>{
     if (open){
       setOpen(false)
     }else{
-      setOpen(true)
+      if(isSignedin){
+        setOpen(true)
+      }else{
+        history.push('signin');
+      }
     }
   }
   return (
@@ -41,7 +47,7 @@ const Button = () => {
       </div>
       :<CommentIcon className={classes.icon}/>}
       </div>
-      {open?<MessageList/>:null}
+      {open?<ChatList/>:null}
     </div>
   );
 }

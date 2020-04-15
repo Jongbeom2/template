@@ -18,6 +18,7 @@ const fileRouter = require('./routes/file');
 const projectRouter = require('./routes/project');
 const apiKeyRouter = require('./routes/apikey');
 const apiDocRouter = require('./routes/apidoc');
+const chatRouter = require('./routes/chat');
 const v1 = require('./routes/v1');
 const dbconnect = require('./schemas');
 const passportConfig = require('./passport');
@@ -52,9 +53,10 @@ app.use('/file',fileRouter);
 app.use('/project',projectRouter);
 app.use('/apikey',apiKeyRouter);
 app.use('/apidoc',apiDocRouter);
+app.use('/chat',chatRouter);
 app.use('/v1',v1);
 // set moddleware - route - other
-app.get('*', function (req, res, next){
+app.get('*', (req, res, next)=>{
   if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "./client/build", "index.html"));
   }else{
