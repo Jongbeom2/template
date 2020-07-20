@@ -85,8 +85,8 @@ app.use((err, req, res, next) => {
       }});
 });
 // set port and server
-const server = app.listen(process.env.PORT || 3000, () => {
-  console.log(process.env.PORT || 3000, '번 포트에서 대기중');
+const server = app.listen(process.env.PORT || 4000, () => {
+  console.log(process.env.PORT || 4000, '번 포트에서 대기중');
 });
 // set websocket
 webSocket(server, app, sessionMiddleware);
