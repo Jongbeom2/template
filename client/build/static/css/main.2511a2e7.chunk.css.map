@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.css"],"names":[],"mappings":"AAAA,KAGE,QACF,CAKA,gBARE,WAAY,CACZ,UAWF,CAJA,MAGE,QACF","file":"main.2511a2e7.chunk.css","sourcesContent":["html{\r\n  height: 100%;\r\n  width: 100%;\r\n  margin: 0px;\r\n}\r\nbody {\r\n  height: 100%;\r\n  width: 100%;\r\n}\r\n#root{\r\n  height: 100%;\r\n  width: 100%;\r\n  margin: 0px;\r\n}"]}

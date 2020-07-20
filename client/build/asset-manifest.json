@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.2511a2e7.chunk.css",
+    "main.js": "/static/js/main.c8b7619f.chunk.js",
+    "main.js.map": "/static/js/main.c8b7619f.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.10f87612.js",
+    "runtime-main.js.map": "/static/js/runtime-main.10f87612.js.map",
+    "static/js/2.05a6c6af.chunk.js": "/static/js/2.05a6c6af.chunk.js",
+    "static/js/2.05a6c6af.chunk.js.map": "/static/js/2.05a6c6af.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.672c93a5a04b986b8490ff6cdcdeb36a.js": "/precache-manifest.672c93a5a04b986b8490ff6cdcdeb36a.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.2511a2e7.chunk.css.map": "/static/css/main.2511a2e7.chunk.css.map",
+    "static/js/2.05a6c6af.chunk.js.LICENSE.txt": "/static/js/2.05a6c6af.chunk.js.LICENSE.txt",
+    "static/media/ai.png": "/static/media/ai.cdf10e82.png",
+    "static/media/javascript.png": "/static/media/javascript.dbd8a820.png",
+    "static/media/jump.png": "/static/media/jump.19155398.png",
+    "static/media/lunch-box.png": "/static/media/lunch-box.18c3ba54.png",
+    "static/media/material-ui.png": "/static/media/material-ui.ce0bf71c.png",
+    "static/media/painter.png": "/static/media/painter.edaeafa2.png",
+    "static/media/profile.png": "/static/media/profile.f6e6c756.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.10f87612.js",
+    "static/js/2.05a6c6af.chunk.js",
+    "static/css/main.2511a2e7.chunk.css",
+    "static/js/main.c8b7619f.chunk.js"
+  ]
+}

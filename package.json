@@ -1,7 +1,7 @@
 {
-  "name": "kims-speech",
+  "name": "template",
   "version": "1.0.0",
-  "description": "kims speech",
+  "description": "template",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app",
@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
-    "bcrypt": "^4.0.0",
+    "bcrypt": "^5.0.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
@@ -32,6 +32,6 @@
     "uuid": "^7.0.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.4"
   }
 }
